@@ -3,49 +3,56 @@ package util;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Memoria {
-	private int[] memoria = new int[512]; // Memória de 512 MB
-	private ArrayList<Processo> processos = new ArrayList<>();;
+public abstract class Memoria {
+	protected int[] memoria = new int[512]; // Memória de 512 MB
+	private ArrayList<Processo> processos = new ArrayList<>();
 
+	public abstract void runTipo(Processo processo);
+	
 	// Criação dos processos
 	public Memoria() {
-		for (int i = 0; i < 15; i++) {
+		for(int i = 0; i < this.memoria.length; i++) this.memoria[i] = 0;
+
+		for (int i = 0; i < 10; i++) {
 			Random r = new Random();
-			this.processos.add(new Processo(i + 1, r.nextInt(50) + 100));
+			this.processos.add(new Processo(i + 1, r.nextInt(20) + 50));
 		}
 	}
 
 	// Alocação dos processos na memória
 	public void run() {
-		for (Processo processo : processos) {
-			if (existememoria(processo.getTamanho())) {
-				// Executar algoritmo de alocação nessa parte
-				
-				if (isCompactar(processo.getTamanho())) {
-					compactar();
+		while(true) {
+			for (Processo processo : processos) {
+				System.out.println(processo);
+				if (existememoria(processo.getTamanho())) {
+					// Executar algoritmo de alocação nessa parte
+					runTipo(processo);
+					this.printMemoria();
+				} else {
+					System.out.println("Sem Memória, não é possível compactar.");
+					this.removeRandom();
 				}
-			} else {
-				System.out.println("Sem Memória");
+				this.sleep();
 			}
 		}
 	}
 
 	// Verificação de espaço de memória livre
-	private boolean existememoria(int espaco) {
+	protected boolean existememoria(int espaco) {
 		int countlivre = 0;
 		for (int i = 0; i < memoria.length; i++) {
 			if (memoria[i] == 0)
 				countlivre++;
 		}
 
-		if (espaco >= countlivre)
+		if (espaco <= countlivre)
 			return true;
 		else
 			return false;
 	}
 
 	// Verificação da memória para saber se existe espaço para inserir processo
-	private boolean isCompactar(int tamanho) {
+	protected boolean isCompactar(int tamanho) {
 		int sequencia = 0;
 		for (int i = 0; i < memoria.length; i++) {
 			if (memoria[i] == 0)
@@ -62,12 +69,12 @@ public class Memoria {
 	}
 
 	// Compactação
-	private void compactar() {
+	protected void compactar() {
 		ArrayList<Integer> aux = new ArrayList<>();
 
 		// Copia toda a memória para um auxiliar
 		for (int i = 0; i < this.memoria.length; i++) {
-			if (this.memoria[i] == 0)
+			if (this.memoria[i] != 0)
 				aux.add(memoria[i]);
 		}
 
@@ -83,5 +90,30 @@ public class Memoria {
 
 		// Substitui a memória
 		this.memoria = memoria;
+	}
+	
+	protected void printMemoria() {
+		System.out.print("Memória: ");
+		for(int i = 0; i < this.memoria.length; i++) {
+			System.out.print(this.memoria[i]+" | ");
+		}
+		System.out.println();
+	}
+	
+	private void removeRandom() {
+		Random r = new Random();
+		int remove = r.nextInt(this.processos.size()) + 1;
+		for(int i = 0; i < this.memoria.length; i++) {
+			if(this.memoria[i]==remove) this.memoria[i] = 0;
+		}
+	}
+	
+	public void sleep() {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

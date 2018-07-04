@@ -3,15 +3,23 @@ package util;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * @author André Lins
+ * @author César Muniz
+ * @author Kenedy Silva
+ *
+ */
+
 public abstract class Memoria {
 	protected int[] memoria = new int[512]; // Memória de 512 MB
 	private ArrayList<Processo> processos = new ArrayList<>();
 
 	public abstract void runTipo(Processo processo);
-	
+
 	// Criação dos processos
 	public Memoria() {
-		for(int i = 0; i < this.memoria.length; i++) this.memoria[i] = 0;
+		for (int i = 0; i < this.memoria.length; i++)
+			this.memoria[i] = 0;
 
 		for (int i = 0; i < 10; i++) {
 			Random r = new Random();
@@ -21,13 +29,14 @@ public abstract class Memoria {
 
 	// Alocação dos processos na memória
 	public void run() {
-		while(true) {
+		while (true) {
 			for (Processo processo : processos) {
 				System.out.println(processo);
 				if (existememoria(processo.getTamanho())) {
 					// Executar algoritmo de alocação nessa parte
 					runTipo(processo);
 					this.printMemoria();
+					this.printMemoriaLivre();
 				} else {
 					System.out.println("Sem Memória, não é possível compactar.");
 					this.removeRandom();
@@ -91,23 +100,34 @@ public abstract class Memoria {
 		// Substitui a memória
 		this.memoria = memoria;
 	}
-	
+
 	protected void printMemoria() {
 		System.out.print("Memória: ");
-		for(int i = 0; i < this.memoria.length; i++) {
-			System.out.print(this.memoria[i]+" | ");
+		for (int i = 0; i < this.memoria.length; i++) {
+			System.out.print(this.memoria[i] + " | ");
 		}
 		System.out.println();
 	}
-	
+
+	protected void printMemoriaLivre() {
+		int memLivre = 0;
+		System.out.print("Total Memória Livre: ");
+		for (int i = 0; i < this.memoria.length; i++) {
+			if (memoria[i] == 0)
+				memLivre++;
+		}
+		System.out.println(memLivre);
+	}
+
 	private void removeRandom() {
 		Random r = new Random();
 		int remove = r.nextInt(this.processos.size()) + 1;
-		for(int i = 0; i < this.memoria.length; i++) {
-			if(this.memoria[i]==remove) this.memoria[i] = 0;
+		for (int i = 0; i < this.memoria.length; i++) {
+			if (this.memoria[i] == remove)
+				this.memoria[i] = 0;
 		}
 	}
-	
+
 	public void sleep() {
 		try {
 			Thread.sleep(2000);

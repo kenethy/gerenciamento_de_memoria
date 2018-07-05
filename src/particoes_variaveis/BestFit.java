@@ -41,7 +41,8 @@ public class BestFit extends Memoria {
 						indiceMenor = auxIndice;
 						qtdMenor = auxQtd;
 					}
-				}							
+				}
+				auxQtd = 0;
 			}			
 		}
 //		System.out.println(indiceMenor);

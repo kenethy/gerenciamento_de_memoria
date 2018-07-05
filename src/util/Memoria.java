@@ -40,6 +40,7 @@ public abstract class Memoria {
 				} else {
 					System.out.println("Sem Memória, não é possível compactar.");
 					this.removeRandom();
+					this.removeRandom();
 				}
 				this.sleep();
 			}

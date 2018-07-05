@@ -12,8 +12,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		// Memoria m = new FirstFit();;
-		//Memoria m = new NextFit();
+		//Memoria m = new FirstFit();
+		//Memoria m = new BestFit();
 		//m.run();
 		
 		Paginacao p = new Relogio();

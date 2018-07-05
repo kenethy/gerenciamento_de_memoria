@@ -6,10 +6,10 @@ public class FIFO extends Paginacao{
 
 	@Override
 	public void addMemoria(Integer pagina, Processo processo) {
-		if(miss(pagina)) {
-			System.out.println("Miss na página "+pagina);
-		} else {
+		if(hit(pagina)) {
 			System.out.println("Hit na página "+pagina);
+		} else {
+			System.out.println("Miss na página "+pagina);
 			if(livre()) {
 				for(int i=0;i<this.memoria.length;i++) {
 					if(this.memoria[i]==-1) {

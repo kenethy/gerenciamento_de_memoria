@@ -1,5 +1,6 @@
 import Paginação.FIFO;
 import Paginação.Paginacao;
+import Paginação.SC;
 import particoes_variaveis.FirstFit;
 import particoes_variaveis.NextFit;
 import util.Memoria;
@@ -19,7 +20,7 @@ public class Main {
 		//Memoria m = new NextFit();
 		//m.run();
 		
-		Paginacao p = new FIFO();
+		Paginacao p = new SC();
 		p.run();
 	}
 

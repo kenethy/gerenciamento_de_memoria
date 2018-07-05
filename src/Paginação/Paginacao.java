@@ -7,11 +7,15 @@ import util.Processo;
 
 public abstract class Paginacao {
 	protected int[] memoria;
+	protected boolean[] segundaChance;
 	protected ArrayList<Processo> processos;
 	protected ArrayList<Integer> entradas;
+	
+	private final static int COUNT_MEMORIA = 8;
 
 	public Paginacao() {
-		this.memoria = new int[4];
+		this.memoria = new int[COUNT_MEMORIA];
+		this.segundaChance = new boolean[COUNT_MEMORIA];
 		this.processos = new ArrayList<>();
 		this.entradas = new ArrayList<>();
 
@@ -24,8 +28,9 @@ public abstract class Paginacao {
 			entradas.add(r.nextInt(16));
 		}
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < this.memoria.length; i++) {
 			this.memoria[i] = -1;
+			this.segundaChance[i] = false;
 		}
 	}
 
@@ -55,7 +60,7 @@ public abstract class Paginacao {
 
 	public abstract void addMemoria(Integer i, Processo p);
 	
-	protected boolean miss(int pagina) {
+	protected boolean hit(int pagina) {
 		for(int i = 0; i < this.memoria.length;i++) {
 			if(this.memoria[i]==pagina) return true;
 		}
@@ -75,6 +80,18 @@ public abstract class Paginacao {
 			if(this.memoria[i]==-1 && i+1<this.memoria.length) {
 				this.memoria[i] = this.memoria[i+1];
 				this.memoria[i+1] = -1;
+			}
+		}
+	}
+	
+	protected void reorganizarSegundaChance() {
+		for(int i=0; i<this.segundaChance.length; i++) {
+			if(i==0) {
+				this.segundaChance[i] = this.segundaChance[i+1];
+			} else if(i+1<this.segundaChance.length) {
+				this.segundaChance[i] = this.segundaChance[i+1];
+			} else if(i+1<this.segundaChance.length) {
+				this.segundaChance[i+1] = false;
 			}
 		}
 	}

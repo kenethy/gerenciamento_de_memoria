@@ -96,7 +96,7 @@ public abstract class Paginacao {
 		}
 	}
 	
-	private void printMemoria() {
+	protected void printMemoria() {
 		System.out.print("Memória: ");
 		for(int i=0; i<this.memoria.length; i++) {
 			System.out.print(this.memoria[i]+" | ");

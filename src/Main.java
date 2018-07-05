@@ -1,9 +1,5 @@
-import Paginação.FIFO;
 import Paginação.Paginacao;
-import Paginação.SC;
-import particoes_variaveis.FirstFit;
-import particoes_variaveis.NextFit;
-import util.Memoria;
+import Paginação.Relogio;
 
 /**
  * @author André Lins
@@ -20,7 +16,7 @@ public class Main {
 		//Memoria m = new NextFit();
 		//m.run();
 		
-		Paginacao p = new SC();
+		Paginacao p = new Relogio();
 		p.run();
 	}
 
